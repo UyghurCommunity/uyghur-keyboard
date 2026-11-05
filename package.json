@@ -1,0 +1,22 @@
+{
+  "name": "@uyghurcommunity/keyboard",
+  "version": "0.1.0",
+  "description": "Accessible, dependency-free Uyghur virtual keyboard and opt-in phonetic key mapping.",
+  "type": "module",
+  "license": "MIT",
+  "author": "UyghurCommunity",
+  "repository": { "type": "git", "url": "https://github.com/UyghurCommunity/uyghur-keyboard.git" },
+  "homepage": "https://uyghurcommunity.github.io/uyghur-keyboard/",
+  "bugs": "https://github.com/UyghurCommunity/uyghur-keyboard/issues",
+  "keywords": ["uyghur", "keyboard", "rtl", "web-component", "unicode", "accessibility"],
+  "exports": {
+    ".": { "types": "./src/index.d.ts", "import": "./src/index.js" },
+    "./element": { "types": "./src/element.d.ts", "import": "./src/element.js" }
+  },
+  "types": "./src/index.d.ts",
+  "files": ["src", "README.md", "LICENSE"],
+  "sideEffects": ["./src/element.js"],
+  "engines": { "node": ">=18" },
+  "scripts": { "test": "node --test", "check": "node --check src/index.js && node --check src/element.js", "prepack": "npm run check && npm test" },
+  "publishConfig": { "access": "public" }
+}
