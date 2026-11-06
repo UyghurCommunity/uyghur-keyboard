@@ -144,3 +144,7 @@ The demo and keyboard keys use **ALKATIP Basma**, requested from OnlineWebFonts 
 Standalone keyboard instances register one shared `@font-face` stylesheet in their owner document. This allows the same face to render keys inside Web Component shadow roots. The registration is reference-counted and removed when the last keyboard that owns it is destroyed. A document stylesheet with the ID `uyghur-keyboard-alkatip-font` can supply the face instead; consumer-owned stylesheets are preserved on cleanup.
 
 The `.alkatip-basma` helper sets the font, `direction: rtl`, `unicode-bidi: embed`, and `line-height: 2.2`. Apply it to Uyghur containers; keep explicit LTR code blocks and identifiers in their own direction context. The library styles keyboard keys without changing the consumer's input font or overriding its configured input direction.
+
+## Demonstration motion
+
+The website includes an original five-keycap sculpture that assembles the Uyghur greeting «سالام». Typing in either demo field lights the artwork without copying, editing, or animating the actual input text. Its visible motion button pauses/resumes the decoration and entrance effects. Reduced-motion preferences are respected from first paint, and continuous CSS animations pause when the card is offscreen or the document is hidden. All content remains visible without the motion script. This artwork is website-only; the npm keyboard behavior is unchanged.

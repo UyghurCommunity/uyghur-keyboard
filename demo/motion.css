@@ -1,0 +1,167 @@
+/* Original keycap sculpture. The real editor is never animated or rewritten. */
+.key-sculpture {
+  --key-gap: 62px;
+  --key-size: 61px;
+  --key-rise: 72px;
+  width: 100%;
+  max-width: 510px;
+  min-width: 0;
+  margin: 0;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border: 1px solid #638f7a66;
+  border-radius: 22px;
+  color: #e9e4cd;
+  background: #103b30;
+  box-shadow: 0 25px 55px #1c453817, inset 0 0 80px #061f233b;
+}
+.key-sculpture::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border: 1px solid #f5d99116;
+  border-radius: 15px;
+  pointer-events: none;
+}
+.key-art-top, .key-art-bottom {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-inline: 25px;
+}
+.key-art-top {
+  padding-top: 22px;
+  font-size: 14px;
+  color: #e8dab5;
+}
+.key-art-status { display: inline-flex; align-items: center; gap: 7px; font-size: 11px; color: #9ac0a8; }
+.key-art-status i { width: 5px; height: 5px; border-radius: 50%; background: #d9bf7b; box-shadow: 0 0 12px #f3d99688; }
+.key-stage {
+  height: 325px;
+  position: relative;
+  perspective: 750px;
+  isolation: isolate;
+}
+.key-threads { position: absolute; inset: 0; width: 100%; height: 100%; opacity: .75; overflow: visible; }
+.thread-guide { stroke-width: .8; opacity: .35; }
+.thread-guide-inner { opacity: .16; stroke-dasharray: 2 6; }
+.thread-dash { stroke: #e4c67c; stroke-width: 1.6; stroke-linecap: round; stroke-dasharray: 4 48; animation: thread-travel 16s linear infinite; opacity: .7; }
+.thread-seam { stroke: #9fc8ad; stroke-width: .6; stroke-dasharray: 1 6; opacity: .25; }
+.thread-knot { fill: #b2c9a3; animation: knot-breathe 5s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+.key-horizon { position: absolute; width: 72%; height: 44%; left: 14%; top: 32%; border-radius: 30px; border: 1px solid #8ebd9d1f; transform: rotateX(55deg) rotateZ(-7deg); box-shadow: 0 20px 50px #031e2580; background: #09362f55; }
+.key-light-sweep { position: absolute; width: 100px; height: 65%; top: 17%; left: 20%; filter: blur(28px); background: #8bbd8930; border-radius: 100%; animation: key-light 10s ease-in-out infinite; pointer-events: none; }
+.sculpture-key {
+  position: absolute;
+  left: 50%;
+  top: 44%;
+  width: var(--key-size);
+  height: calc(var(--key-size) * 1.05);
+  display: grid;
+  place-items: center;
+  border: 1px solid #c8e4c280;
+  border-radius: 16px;
+  background: linear-gradient(150deg, #eff0ce, #c1d5ac);
+  color: #284d3a;
+  box-shadow: 0 8px 0 #537b5a, 0 10px 0 #244f3d, 0 22px 29px #001f2a75, inset 0 2px 3px #ffffeaaa;
+  transform: translate(calc(-50% + var(--from-x) * var(--key-gap)), calc(-50% + var(--from-y) * var(--key-rise))) rotate(var(--turn));
+  animation: key-word-assembly 9s cubic-bezier(.45, 0, .25, 1) infinite;
+  animation-delay: var(--delay);
+  will-change: transform;
+}
+.sculpture-key > span { display: block; font: 43px/1.4 "ALKATIP Basma", Tahoma, sans-serif; transform: translateY(-3px); }
+.sculpture-key > small { position: absolute; bottom: 5px; right: 9px; color: #587453; font: 7px/1 ui-monospace, "ALKATIP Basma", monospace; }
+.key-s, .key-a-two { background: linear-gradient(140deg, #e6d29c, #bea96b); border-color: #eedda58c; color: #4f482c; box-shadow: 0 8px 0 #8a7848, 0 10px 0 #4b5537, 0 22px 29px #001f2a75, inset 0 2px 3px #ffffeaaa; }
+.key-l { background: linear-gradient(150deg, #74bb9e, #3e8b71); color: #f5eed2; border-color: #acd7b68c; box-shadow: 0 8px 0 #276e55, 0 10px 0 #184c41, 0 22px 29px #001f2a75, inset 0 2px 3px #bfe7caaa; }
+.key-l > small { color: #d5ead0; }
+.joined-word { position: absolute; top: 67%; left: 50%; transform: translateX(-50%); text-align: center; }
+.joined-word > span { display: block; font: 41px/1.5 "ALKATIP Basma", Tahoma, sans-serif; color: #f0e4b8; text-shadow: 0 0 20px #e8d98e45; animation: word-arrives 9s ease-in-out infinite; }
+.joined-word > i { display: block; height: 1px; width: 90px; margin-inline: auto; background: linear-gradient(90deg, transparent, #eed99a, transparent); transform-origin: center; animation: word-underline 9s ease-in-out infinite; }
+.key-art-spark { position: absolute; font: 25px/1 "ALKATIP Basma", Tahoma, sans-serif; color: #d5c892; opacity: .55; animation: knot-breathe 6s ease-in-out infinite; }
+.spark-one { top: 20%; left: 13%; }
+.spark-two { bottom: 17%; right: 14%; animation-delay: -3s; font-size: 18px; }
+.key-art-bottom { padding-block: 17px 23px; border-top: 1px solid #c8ddb526; }
+.key-art-bottom > p { font-size: 13px; }
+.key-art-bottom small { display: block; font-size: 10px; color: #a9c3a8; margin-top: 4px; }
+.art-motion-toggle { display: inline-flex; align-items: center; gap: 7px; border: 1px solid #bdcea947; border-radius: 22px; padding: 5px 11px; font: 11px/2 "ALKATIP Basma", Tahoma, sans-serif; color: #e9e0bb; background: #a0c39b0c; flex-shrink: 0; }
+.art-motion-toggle:hover { background: #a0c39b1a; border-color: #cddba8aa; }
+.art-motion-toggle:disabled { opacity: .5; cursor: default; }
+.key-sculpture[data-motion="paused"] *, .key-sculpture[data-motion="paused"]::before { animation-play-state: paused !important; }
+.key-sculpture[data-stroke="a"] .sculpture-key[data-hot="true"] { animation-name: key-word-assembly, typed-key-a; animation-duration: 9s, .65s; animation-delay: var(--delay), 0s; animation-iteration-count: infinite, 1; }
+.key-sculpture[data-stroke="b"] .sculpture-key[data-hot="true"] { animation-name: key-word-assembly, typed-key-b; animation-duration: 9s, .65s; animation-delay: var(--delay), 0s; animation-iteration-count: infinite, 1; }
+.key-sculpture[data-stroke="a"] .joined-word { animation: typed-word-a .6s ease-out; }
+.key-sculpture[data-stroke="b"] .joined-word { animation: typed-word-b .6s ease-out; }
+@keyframes key-word-assembly {
+  0%, 15%, 88%, 100% { transform: translate(calc(-50% + var(--from-x) * var(--key-gap)), calc(-50% + var(--from-y) * var(--key-rise))) rotate(var(--turn)) rotateX(10deg); }
+  43%, 62% { transform: translate(calc(-50% + var(--slot) * var(--key-gap)), -50%) rotate(0deg) rotateX(0deg); }
+  73% { transform: translate(calc(-50% + var(--slot) * var(--key-gap)), -58%) rotate(0deg); }
+}
+@keyframes thread-travel { to { stroke-dashoffset: -624; } }
+@keyframes knot-breathe { 0%, 100% { opacity: .3; } 50% { opacity: 1; } }
+@keyframes key-light { 0%, 100% { transform: translateX(0) rotate(-20deg); opacity: .4; } 50% { transform: translateX(90px) rotate(20deg); opacity: .9; } }
+@keyframes word-arrives { 0%, 20%, 88%, 100% { opacity: .4; } 45%, 65% { opacity: 1; } }
+@keyframes word-underline { 0%, 20%, 88%, 100% { transform: scaleX(.35); opacity: .2; } 45%, 65% { transform: scaleX(1); opacity: .8; } }
+@keyframes typed-key-a { 0%, 100% { filter: brightness(1); } 35% { filter: brightness(1.6) drop-shadow(0 0 12px #d2e9a7); } }
+@keyframes typed-key-b { 0%, 100% { filter: brightness(1); } 35% { filter: brightness(1.6) drop-shadow(0 0 12px #d2e9a7); } }
+@keyframes typed-word-a { 0%, 100% { filter: brightness(1); } 35% { filter: brightness(1.45); } }
+@keyframes typed-word-b { 0%, 100% { filter: brightness(1); } 35% { filter: brightness(1.45); } }
+.motion-enter { animation: motion-arrive .65s cubic-bezier(.2, .7, .25, 1) both; }
+.motion-enter[data-viewport="outside"], body[data-page-motion="paused"] .motion-enter { animation-play-state: paused; }
+@keyframes motion-arrive { from { opacity: .45; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+.code-card, .component-card, .editor-card { transition: border-color .2s, box-shadow .2s, transform .25s; }
+body[data-page-motion="playing"] .code-card:hover { transform: translateY(-4px); border-color: #88aa92; box-shadow: 0 12px 28px #244b3c0a; }
+.button { transition: background .2s, box-shadow .2s, transform .2s; }
+body[data-page-motion="playing"] .button:hover { transform: translateY(-2px); box-shadow: 0 6px 20px #194d3c20; }
+@media (max-width: 950px) {
+  .key-sculpture { --key-gap: 51px; --key-size: 51px; --key-rise: 66px; }
+  .key-stage { height: 300px; }
+  .key-art-top, .key-art-bottom { margin-inline: 20px; }
+  .key-art-status { font-size: 10px; }
+  .sculpture-key > span { font-size: 37px; }
+  .key-art-bottom > p { font-size: 12px; }
+  .key-art-bottom small { font-size: 9px; }
+  .motion-toggle-text { display: none; }
+}
+@media (max-width: 620px) {
+  .hero { gap: 18px; padding-top: 25px; }
+  .hero-copy { display: contents; }
+  .hero-copy > .eyebrow { grid-row: 1; margin: 0; }
+  .hero-copy > h1 { grid-row: 2; }
+  .key-sculpture { grid-row: 3; }
+  .hero-copy > .intro { grid-row: 4; }
+  .hero-copy > .badges { grid-row: 5; }
+  .hero-copy > .button { grid-row: 6; justify-self: start; }
+  .hero-copy > .support { grid-row: 7; }
+  .hero-copy > .intro, .hero-copy > .badges, .hero-copy > .button, .hero-copy > .support { margin-top: 0; }
+  .hero h1 { font-size: 38px; line-height: 1.5; }
+  .hero .intro { font-size: 14px; margin-top: 15px; line-height: 1.95; }
+  .hero .badges { margin-top: 16px; }
+  .hero .button { margin-top: 18px; padding-block: 8px; }
+  .hero .support { font-size: 8px; margin-top: 12px; }
+  .key-sculpture { --key-gap: 49px; --key-size: 49px; --key-rise: 57px; max-width: 440px; justify-self: center; border-radius: 17px; }
+  .key-stage { height: 252px; }
+  .key-art-top { padding-top: 15px; font-size: 12px; }
+  .key-art-top, .key-art-bottom { margin-inline: 18px; }
+  .key-art-status { font-size: 9px; }
+  .key-art-bottom { padding-block: 13px 16px; }
+  .key-art-bottom > p { font-size: 12px; }
+  .key-art-bottom small { font-size: 9px; }
+  .joined-word > span { font-size: 35px; }
+  .sculpture-key { border-radius: 12px; }
+  .sculpture-key > span { font-size: 35px; }
+  .motion-toggle-text { display: inline; }
+}
+@media (max-width: 370px) {
+  .key-sculpture { --key-gap: 44px; --key-size: 44px; }
+  .key-art-status { font-size: 8px; }
+  .key-art-bottom small { max-width: 180px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .key-sculpture *, .motion-enter { animation: none !important; }
+  .code-card, .component-card, .editor-card, .button { transition: none !important; }
+  body[data-page-motion="playing"] .code-card:hover, body[data-page-motion="playing"] .button:hover { transform: none; }
+}
+@media print { .key-sculpture { display: none; } .motion-enter { animation: none; } }
