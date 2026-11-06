@@ -16,7 +16,11 @@ A dependency-free virtual keyboard, optional phonetic mapping, and Web Component
 
 ## Package and source
 
-Package name: **`@uyghurcommunity/keyboard`**, version **0.1.0**. Source releases and npm registry publication are separate; consult the registry for the available published version.
+Package name: **`@uyghurcommunity/keyboard`**, version **0.1.1**. Install the [GitHub release archive](https://github.com/UyghurCommunity/uyghur-keyboard/releases/tag/v0.1.1) while npm registry publishing is deferred:
+
+```sh
+npm install https://github.com/UyghurCommunity/uyghur-keyboard/releases/download/v0.1.1/uyghurcommunity-keyboard-0.1.1.tgz
+```
 
 No build step is needed. In this checkout:
 
@@ -131,4 +135,12 @@ Bug reports with browser details, accessibility fixes, reviewed layout improveme
 
 ## License
 
-[MIT](LICENSE), © 2026 UyghurCommunity. Demo typography uses system Tahoma/Arial; no font files or external datasets are bundled.
+[MIT](LICENSE), © 2026 UyghurCommunity. Uyghur typography uses externally linked ALKATIP Basma with system Tahoma/Arial fallbacks. The font is not bundled or covered by this code license. No external dataset is bundled.
+
+## Typography
+
+The demo and keyboard keys use **ALKATIP Basma**, requested from OnlineWebFonts using WOFF2 with WOFF/TTF fallbacks and `font-display: swap`. Font binaries are not included in the package. The font host receives the browser's normal font request; typed text is never included in that request. If loading is blocked, the interface falls back to system fonts.
+
+Standalone keyboard instances register one shared `@font-face` stylesheet in their owner document. This allows the same face to render keys inside Web Component shadow roots. The registration is reference-counted and removed when the last keyboard that owns it is destroyed. A document stylesheet with the ID `uyghur-keyboard-alkatip-font` can supply the face instead; consumer-owned stylesheets are preserved on cleanup.
+
+The `.alkatip-basma` helper sets the font, `direction: rtl`, `unicode-bidi: embed`, and `line-height: 2.2`. Apply it to Uyghur containers; keep explicit LTR code blocks and identifiers in their own direction context. The library styles keyboard keys without changing the consumer's input font or overriding its configured input direction.

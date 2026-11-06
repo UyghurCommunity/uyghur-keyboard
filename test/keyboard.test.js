@@ -20,7 +20,9 @@ class Element extends EventTarget {
   removeEventListener(name, fn, options) { super.removeEventListener(name, fn, options); this.listeners.get(name)?.delete(fn); }
 }
 function setup(value = 'سالام دۇنيا') {
-  const doc = new EventTarget(); doc.defaultView = { Event, CustomEvent }; doc.readyState = 'complete'; doc.createElement = (tag) => new Element(tag, doc); doc.ids = new Map(); doc.getElementById = (id) => doc.ids.get(id);
+  const doc = new EventTarget(); doc.defaultView = { Event, CustomEvent }; doc.readyState = 'complete'; doc.createElement = (tag) => new Element(tag, doc); doc.ids = new Map(); doc.head = doc.createElement('head');
+  const findId = (node, id) => node.id === id || node.getAttribute('id') === id ? node : node.children.map((child) => findId(child, id)).find(Boolean);
+  doc.getElementById = (id) => doc.ids.get(id) || findId(doc.head, id);
   const parent = doc.createElement('main'), target = doc.createElement('textarea'); target.value = value; target.setSelectionRange(value.length, value.length); parent.appendChild(target);
   return { doc, target, parent };
 }
@@ -86,14 +88,37 @@ test('consumer direction changes survive cleanup and invalid targets are rejecte
   const { target } = setup(); const keyboard = createKeyboard(target); target.setAttribute('dir', 'ltr'); keyboard.destroy(); assert.equal(target.getAttribute('dir'), 'ltr');
   assert.throws(() => createKeyboard({}), TypeError); const email = setup().doc.createElement('input'); email.type = 'email'; assert.throws(() => createKeyboard(email), TypeError);
 });
+test('standalone keyboards share one document font registration and clean up the last owned reference', () => {
+  const { target, doc } = setup();
+  const first = createKeyboard(target), second = createKeyboard(target);
+  assert.equal(doc.head.children.length, 1);
+  const font = doc.head.children[0];
+  assert.equal(font.id, 'uyghur-keyboard-alkatip-font');
+  assert.match(font.textContent, /font-family: "ALKATIP Basma"/);
+  assert.match(font.textContent, /3c16518f40da2fc2901f37666c0556a7\.woff2/);
+  assert.match(font.textContent, /font-display: swap/);
+  first.destroy(); assert.equal(doc.head.children.length, 1);
+  second.destroy(); assert.equal(doc.head.children.length, 0);
+  second.destroy(); assert.equal(doc.head.children.length, 0);
+});
+test('consumer-provided document font styles are reused and preserved on cleanup', () => {
+  const { target, doc } = setup();
+  const existing = doc.createElement('link'); existing.id = 'uyghur-keyboard-alkatip-font'; doc.head.appendChild(existing);
+  const keyboard = createKeyboard(target);
+  assert.equal(doc.head.children.length, 1);
+  keyboard.destroy(); assert.equal(doc.head.children[0], existing);
+});
 test('web component registers idempotently, mounts, updates physical mapping and cleans up', () => {
   const { doc, target } = setup(''); doc.ids.set('target', target); const oldElement = globalThis.HTMLElement, oldRegistry = globalThis.customElements;
   const classes = new Map(); globalThis.HTMLElement = class extends Element { constructor() { super('uyghur-keyboard', doc); this.isConnected = false; } attachShadow() { this.shadowRoot = new Element('shadow-root', doc); return this.shadowRoot; } };
   globalThis.customElements = { get: (name) => classes.get(name), define: (name, value) => classes.set(name, value) };
   try {
     const Component = defineUyghurKeyboard(); assert.equal(defineUyghurKeyboard(), Component); const element = new Component(); element.setAttribute('for', 'target'); element.isConnected = true; element.connectedCallback();
+    assert.equal(doc.head.children.length, 1);
+    assert.match(element.controller.element.children[0].textContent, /"ALKATIP Basma"/);
+    assert.doesNotMatch(element.controller.element.children[0].textContent, /@font-face/);
     assert.equal(element.insert('ئ'), true); assert.equal(target.value, 'ئ');
     element.setAttribute('physical', ''); element.attributeChangedCallback(); key(target, 'q'); assert.equal(target.value, 'ئق');
-    element.disconnectedCallback(); assert.equal(element.insert('ا'), false); assert([...target.listeners.values()].every((listeners) => listeners.size === 0));
+    element.disconnectedCallback(); assert.equal(element.insert('ا'), false); assert.equal(doc.head.children.length, 0); assert([...target.listeners.values()].every((listeners) => listeners.size === 0));
   } finally { if (oldElement === undefined) delete globalThis.HTMLElement; else globalThis.HTMLElement = oldElement; if (oldRegistry === undefined) delete globalThis.customElements; else globalThis.customElements = oldRegistry; }
 });

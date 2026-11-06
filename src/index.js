@@ -1,4 +1,34 @@
-import { keyboardStyles } from './style.js';
+import { alkatipFontFace, alkatipHelperStyles, keyboardStyles } from './style.js';
+
+const fontStyleId = 'uyghur-keyboard-alkatip-font';
+const fontRegistrations = new WeakMap();
+function acquireFont(document) {
+  let registration = fontRegistrations.get(document);
+  if (!registration) {
+    const parent = document.head || document.documentElement;
+    if (!parent) return () => {};
+    let element = document.getElementById(fontStyleId);
+    const owned = !element;
+    if (!element) {
+      element = document.createElement('style');
+      element.id = fontStyleId;
+      element.textContent = alkatipFontFace + '\n' + alkatipHelperStyles;
+      parent.appendChild(element);
+    }
+    registration = { element, owned, count: 0 };
+    fontRegistrations.set(document, registration);
+  }
+  registration.count++;
+  let released = false;
+  return () => {
+    if (released) return;
+    released = true;
+    if (--registration.count === 0) {
+      if (registration.owned) registration.element.remove();
+      fontRegistrations.delete(document);
+    }
+  };
+}
 
 /** The complete 32-letter alphabet is represented across these virtual rows. */
 export const KEY_LAYOUT = Object.freeze([
@@ -70,7 +100,7 @@ export function createKeyboard(target, options = {}) {
   }
   const doc = target.ownerDocument;
   const root = doc.createElement('div');
-  root.className = 'ug-keyboard';
+  root.className = 'ug-keyboard alkatip-basma';
   root.lang = 'ug';
   root.setAttribute('role', 'group');
   root.setAttribute('aria-label', options.label || 'ئۇيغۇرچە كۇنۇپكا تاختىسى');
@@ -110,6 +140,9 @@ export function createKeyboard(target, options = {}) {
   if (options.container) options.container.appendChild(root);
   else if (target.parentNode) target.parentNode.insertBefore(root, target.nextSibling);
   else throw new Error('Attach the target to a document or provide a container');
+  // Font faces must be registered in the owner document, including when keys
+  // themselves live in a Web Component's shadow root.
+  const releaseFont = acquireFont(doc);
 
   function commit(result, inputType, text) {
     if (destroyed || target.disabled || target.readOnly || composing) return false;
@@ -169,6 +202,7 @@ export function createKeyboard(target, options = {}) {
       target.removeEventListener('compositionstart', beginComposition);
       target.removeEventListener('compositionend', endComposition);
       root.remove();
+      releaseFont();
       if (direction !== 'preserve' && target.getAttribute('dir') === direction) {
         if (originalDirection === null) target.removeAttribute('dir');
         else target.setAttribute('dir', originalDirection);

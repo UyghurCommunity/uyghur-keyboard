@@ -1,3 +1,20 @@
+@font-face {
+  font-family: "ALKATIP Basma";
+  src: url("https://db.onlinewebfonts.com/t/3c16518f40da2fc2901f37666c0556a7.woff2") format("woff2"),
+       url("https://db.onlinewebfonts.com/t/3c16518f40da2fc2901f37666c0556a7.woff") format("woff"),
+       url("https://db.onlinewebfonts.com/t/3c16518f40da2fc2901f37666c0556a7.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+.alkatip-basma {
+  font-family: "ALKATIP Basma", serif;
+  direction: rtl;
+  unicode-bidi: embed;
+  line-height: 2.2;
+}
+
 :root {
   color-scheme:light;
   --bg:#f6f4ec;
@@ -23,7 +40,7 @@ body {
   margin:0;
   background:var(--bg);
   color:var(--ink);
-  font:17px/1.9 Tahoma,Arial,sans-serif;
+  font:17px/1.9 "ALKATIP Basma",Tahoma,Arial,sans-serif;
 }
 
 button,input,textarea {
@@ -100,7 +117,7 @@ h3 {
 
 .brand small {
   display:block;
-  font:9px/1.6 ui-monospace,monospace;
+  font:9px/1.6 ui-monospace,"ALKATIP Basma",monospace;
   letter-spacing:.13em;
   color:var(--muted);
   margin-top:4px;
@@ -171,7 +188,7 @@ h3 {
 }
 
 .support {
-  font:10px/1.6 ui-monospace,monospace;
+  font:10px/1.6 ui-monospace,"ALKATIP Basma",monospace;
   color:var(--muted);
   margin-top:18px;
 }
@@ -314,7 +331,7 @@ textarea {
   background:#f7f8f2;
   border:1px solid var(--line);
   border-radius:12px;
-  font:24px/1.9 Tahoma,Arial,sans-serif;
+  font:24px/1.9 "ALKATIP Basma",Tahoma,Arial,sans-serif;
 }
 
 .editor-meta {
@@ -373,17 +390,21 @@ textarea {
 }
 
 .code-heading h3 {
-  font:12px ui-monospace,monospace;
+  font:12px ui-monospace,"ALKATIP Basma",monospace;
 }
 
 .code-card pre {
   margin:0;
   padding:22px;
-  font:12px/1.9 ui-monospace,monospace;
+  font:12px/1.9 ui-monospace,"ALKATIP Basma",monospace;
   white-space:pre-wrap;
   overflow-wrap:anywhere;
   color:#3d6653;
   text-align:left;
+}
+
+.code-card code {
+  font:inherit;
 }
 
 .code-note {
@@ -439,7 +460,7 @@ textarea {
 }
 
 .footer>span {
-  font:11px ui-monospace,monospace;
+  font:11px ui-monospace,"ALKATIP Basma",monospace;
 }
 
 .toast {
